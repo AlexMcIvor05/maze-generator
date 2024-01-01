@@ -284,7 +284,7 @@ def intersect(rectangle, lst):
 
 def reset(event):
     canvas.delete("all")
-    print("hi")
+    
     
     rectangle= blTr([485, 800, 515, 700])
     canvas.create_rectangle(rectangle, fill="red")
