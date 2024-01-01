@@ -79,7 +79,9 @@ def create_path(rectangle, orientation):
     direction = random.randint(1,6)
     rectangle = blTr(rectangle)
     
-    rand1 = random.randint(100,200)
+    
+    #this changes how long the rectangle is
+    rand1 = random.randint(100,150)
     
     
     if orientation == "up":
@@ -142,9 +144,10 @@ def make_path(rectangle):
     Creates a pathway
     """
     
-    if abs(rectangle[0]-rectangle[2]) < 100:#vertical path
+    if abs(rectangle[0]-rectangle[2]) == 30:#vertical path
         canvas.create_line(rectangle[0],rectangle[1],rectangle[0],rectangle[3])
         canvas.create_line(rectangle[2],rectangle[1],rectangle[2],rectangle[3])
+    
     else:#horizontal path
         canvas.create_line(rectangle[0],rectangle[1],rectangle[2],rectangle[1])
         canvas.create_line(rectangle[0],rectangle[3],rectangle[2],rectangle[3])
@@ -195,13 +198,35 @@ def blTr(rectangle):
 def make_connection(rectangle1, rectangle2):
     '''
     (list,list)-> rectangle
-    Precondition : rectangle is a list [x1,y1,x2,y2]
+    Precondition : rectangle is a list [x1,y1,x2,y2], rectangle2 is a path made from rectangle1
     
     Connects the two pathways 
     '''
-    path_orientation(rectangle1)
+    orientation1 = path_orientation(rectangle1)
+        
+    if orientation1 == "up":
+        if rectangle1[2] > rectangle2[0] or rectangle1[2] > rectangle2[2]:    
+            canvas.create_line(rectangle1[0], rectangle1[3]+1, rectangle1[0], rectangle1[3]+30, fill = "white") 
+        else:
+            canvas.create_line(rectangle1[2], rectangle1[3]+1, rectangle1[2], rectangle1[3] + 30, fill = "white")
+    elif orientation1 == "down":
+        if rectangle1[2] > rectangle2[0] or rectangle1[2] > rectangle2[2]:    
+            canvas.create_line(rectangle1[2], rectangle1[3]-1, rectangle1[2], rectangle1[3] - 30, fill = "white")
+        else:  
+            canvas.create_line(rectangle1[0], rectangle1[3]-1, rectangle1[0], rectangle1[3]-30, fill = "white")
     
-    
+    elif orientation1 == "left":
+        if rectangle1[3] > rectangle2[3] or rectangle1[3] > rectangle2[1]:    
+            canvas.create_line(rectangle1[2]+1, rectangle1[3], rectangle1[2]+30, rectangle1[3], fill = "white")
+        else: 
+            canvas.create_line(rectangle1[2]+1, rectangle1[1], rectangle1[2]+30, rectangle1[1], fill = "white")
+    else:
+        if rectangle1[3] > rectangle2[3] or rectangle1[3] > rectangle2[1]:    
+            canvas.create_line(rectangle1[2]-1, rectangle1[1], rectangle1[2]-30, rectangle1[1], fill = "white")
+            
+        else: 
+            canvas.create_line(rectangle1[2]-1, rectangle1[3], rectangle1[2]-30, rectangle1[3], fill = "white")
+            
 def re_orient(rectangle):
     '''
     (list)->list
@@ -299,6 +324,8 @@ for i in range(100):
     print(rectangle_group)    
     potential_rectangle = create_path(rectangle, path_orientation(rectangle))
 
+for i in range(len(rectangle_group)-1):
+    make_connection(rectangle_group[i],rectangle_group[i+1])
 ###################################################
 
 
