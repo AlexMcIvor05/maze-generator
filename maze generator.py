@@ -1,4 +1,5 @@
 from tkinter import *
+import time
 import random
 
 root=Tk()
@@ -280,19 +281,41 @@ def intersect(rectangle, lst):
                 or rectangle[3] <= rectangle2[1]):
             return True
     return False
+
+def reset(event):
+    canvas.delete("all")
+    print("hi")
     
+    rectangle= blTr([485, 800, 515, 700])
+    canvas.create_rectangle(rectangle, fill="red")
+    rectangle_group= []
+    rectangle_group.append(rectangle)
+    
+    potential_rectangle = create_path(rectangle, path_orientation(rectangle))
+    
+    for i in range(500):
+        if intersect(potential_rectangle, rectangle_group) == False:
+            rectangle = potential_rectangle
+            rectangle_group.append(rectangle)
+            canvas.create_rectangle(rectangle)
+            #, fill=color[i]
+         
+        potential_rectangle = create_path(rectangle, path_orientation(rectangle))
+    canvas.create_rectangle(rectangle_group[-1][0], rectangle_group[-1][1], rectangle_group[-1][2], rectangle_group[-1][3], fill = "green")
+    for i in range(len(rectangle_group)-1):
+        make_connection(rectangle_group[i],rectangle_group[i+1])
     
 root.title('Maze Rush')
 root.geometry("800x800")
 root.config(cursor="circle #FF00FF")
-root.configure(bg="red")
+root.configure(bg="white")
 
 canvas = Canvas(root, width=1000, height = 800)
 canvas.pack()
    
 canvas.configure(bg="white")
    
-   
+
 #root.bind('<Motion>', motion)
              
 
@@ -314,22 +337,24 @@ potential_rectangle = create_path(rectangle, path_orientation(rectangle))
 #canvas.create_rectangle(624, 300, 594, 185)
 #canvas.create_rectangle(639, 118, 609, 250)
 print(path_orientation(rectangle))
-for i in range(100):
-    print(potential_rectangle)
+for i in range(500):
     if intersect(potential_rectangle, rectangle_group) == False:
         rectangle = potential_rectangle
         rectangle_group.append(rectangle)
         canvas.create_rectangle(rectangle)
         #, fill=color[i]
-    print(rectangle_group)    
+        
     potential_rectangle = create_path(rectangle, path_orientation(rectangle))
+canvas.create_rectangle(rectangle_group[-1][0], rectangle_group[-1][1], rectangle_group[-1][2], rectangle_group[-1][3], fill = "green")
 
 for i in range(len(rectangle_group)-1):
     make_connection(rectangle_group[i],rectangle_group[i+1])
 ###################################################
 
-
+root.bind("<space>", reset)
 #canvas.create_rectangle([200,400,230,600], fill="white")
+
+
 
 
 move_mouse_to(500, 1000)
