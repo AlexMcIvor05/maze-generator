@@ -360,7 +360,7 @@ def reset(event):
     
     rectangle_group = []
     
-    while len(rectangle_group) < 20:#This number changes what the minimum rectangles that can be in a group
+    while len(rectangle_group) < 15:#This number changes what the minimum rectangles that can be in a group
         #anything >50 starts to have a noticable delay. anything >100 may cause crashes as it gets exponetially harder to find space
          
         rectangle= blTr([width//2-15, height-20, width//2+15, height-60])
@@ -401,8 +401,9 @@ def reset(event):
     
     
 ###################################################
+#main
 ###################################################
-    
+
     
 root.title('Maze Rush')
 
@@ -424,7 +425,6 @@ canvas.configure(bg="white")
 root.bind("<Escape>", escape)
 root.bind("<space>", reset)
 root.bind('<Motion>', motion)
-
 
 
 
